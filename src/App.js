@@ -1,6 +1,15 @@
 // import { Route, Switch } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
+import {
+  Component,
+  useEffect,
+  useState,
+  useReducer,
+  useRef,
+  useMemo,
+  useCallback,
+} from 'react';
 // import { ToastContainer } from 'react-toastify';
 // import PaintingList from './components/PaintingList';
 // import Counter from './components/Counter';
@@ -13,9 +22,15 @@ import { Routes, Route } from 'react-router-dom';
 // import Clock from './components/Clock/Clock';
 // import PokemonForm from './components/Pokemons/PokemonForm';
 // import PokemonInfo from './components/Pokemons/PokemonInfo';
-import AppBar from './components/AppBar';
-import Container from './components/Container';
-import HomeView from './views/HomeView';
+// import AppBar from './components/AppBar';
+// import Container from './components/Container';
+// import HomeView from './views/HomeView';
+import RadioButtons from './components/RadioButtons';
+import CustomSelect from './components/CustomSelect';
+import axios from 'axios';
+import { getContactsList, addContact } from './api/api';
+import { useFetch } from './hooks/useFetch';
+import { useMutation, useQuery } from 'react-query';
 //Objects
 // import tabs from './tabs.json';
 // import initialTodos from './todos.json';
@@ -31,13 +46,52 @@ import HomeView from './views/HomeView';
 // ];
 
 export default function App() {
+  const { data, isFetching, refetch } = useQuery({
+    queryKey: ['contactsList'],
+    queryFn: getContactsList,
+  });
+
+  const { mutateAsync } = useMutation({
+    mutationFn: payload => addContact(payload),
+  });
+
+  const addNewContact = async () => {
+    const payload = {
+      name: 'Lucy',
+      lastName: 'Grey',
+      about: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
+    };
+    try {
+      await mutateAsync(payload);
+    } catch (error) {}
+  };
+
   return (
-    <Container>
-      <AppBar />
-      <Routes>
-        <Route path="/main" element={<HomeView />}></Route>
-      </Routes>
-    </Container>
+    <>
+      <header>
+        <h1>Contacts</h1>
+        <main>
+          <ul>
+            {isFetching ? (
+              <div>Loading...</div>
+            ) : (
+              data?.map(contact => (
+                <li key={contact.id}>
+                  {contact.name} {contact.lastName}
+                </li>
+              ))
+            )}
+          </ul>
+          <button onClick={addNewContact}>Add contact</button>
+        </main>
+      </header>
+    </>
+    // <Container>
+    //   <AppBar />
+    //   <Routes>
+    //     <Route path="/main" element={<HomeView />}></Route>
+    //   </Routes>
+    // </Container>
   );
 }
 
