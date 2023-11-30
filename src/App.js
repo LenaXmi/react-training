@@ -10,8 +10,8 @@ import {
   useMemo,
   useCallback,
 } from 'react';
-// import { ToastContainer } from 'react-toastify';
-// import PaintingList from './components/PaintingList';
+import { ToastContainer } from 'react-toastify';
+// import PaintingList from './components/Paintings/PaintingList.js';
 // import Counter from './components/Counter';
 // import Dropdown from './components/Dropdown';
 // import ColorPicker from './components/ColorPicker';
@@ -22,9 +22,9 @@ import {
 // import Clock from './components/Clock/Clock';
 // import PokemonForm from './components/Pokemons/PokemonForm';
 // import PokemonInfo from './components/Pokemons/PokemonInfo';
-// import AppBar from './components/AppBar';
-// import Container from './components/Container';
-// import HomeView from './views/HomeView';
+import AppBar from './components/AppBar';
+import Container from './components/Container';
+import HomeView from './views/HomeView';
 import RadioButtons from './components/RadioButtons';
 import CustomSelect from './components/CustomSelect';
 import axios from 'axios';
@@ -46,52 +46,52 @@ import { useMutation, useQuery } from 'react-query';
 // ];
 
 export default function App() {
-  const { data, isFetching, refetch } = useQuery({
-    queryKey: ['contactsList'],
-    queryFn: getContactsList,
-  });
+  // const { data, isFetching, refetch } = useQuery({
+  //   queryKey: ['contactsList'],
+  //   queryFn: getContactsList,
+  // });
 
-  const { mutateAsync } = useMutation({
-    mutationFn: payload => addContact(payload),
-  });
+  // const { mutateAsync } = useMutation({
+  //   mutationFn: payload => addContact(payload),
+  // });
 
-  const addNewContact = async () => {
-    const payload = {
-      name: 'Lucy',
-      lastName: 'Grey',
-      about: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-    };
-    try {
-      await mutateAsync(payload);
-    } catch (error) {}
-  };
+  // const addNewContact = async () => {
+  //   const payload = {
+  //     name: 'Lucy',
+  //     lastName: 'Grey',
+  //     about: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
+  //   };
+  //   try {
+  //     await mutateAsync(payload);
+  //   } catch (error) {}
+  // };
 
   return (
-    <>
-      <header>
-        <h1>Contacts</h1>
-        <main>
-          <ul>
-            {isFetching ? (
-              <div>Loading...</div>
-            ) : (
-              data?.map(contact => (
-                <li key={contact.id}>
-                  {contact.name} {contact.lastName}
-                </li>
-              ))
-            )}
-          </ul>
-          <button onClick={addNewContact}>Add contact</button>
-        </main>
-      </header>
-    </>
-    // <Container>
-    //   <AppBar />
-    //   <Routes>
-    //     <Route path="/main" element={<HomeView />}></Route>
-    //   </Routes>
-    // </Container>
+    // <>
+    //   <header>
+    //     <h1>Contacts</h1>
+    //     <main>
+    //       <ul>
+    //         {isFetching ? (
+    //           <div>Loading...</div>
+    //         ) : (
+    //           data?.map(contact => (
+    //             <li key={contact.id}>
+    //               {contact.name} {contact.lastName}
+    //             </li>
+    //           ))
+    //         )}
+    //       </ul>
+    //       <button onClick={addNewContact}>Add contact</button>
+    //     </main>
+    //   </header>
+    // </>
+    <Container>
+      <AppBar />
+      <Routes>
+        <Route path="/main" element={<HomeView />}></Route>
+      </Routes>
+    </Container>
   );
 }
 
